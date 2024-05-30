@@ -53,6 +53,8 @@ def end_session(currentUser:User)->bool:
     file.close()
     return True
 
+def login(currentUser:User)->bool:
+    return True
 #newUser=register_user("bingo","bango",200.0)
 #end_session(register_user("bingo","bango",200.0))
 
