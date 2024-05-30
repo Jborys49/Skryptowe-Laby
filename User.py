@@ -1,15 +1,6 @@
 import datetime
 class User:
-    def __init__(self, login:str, password:str,starting_funds:float):
-        self.login = login
-        self.password = password
-        self.starting_funds =starting_funds
-        self.currentfunds = starting_funds
-        self.currentdate=datetime.date(2001,1,10)
-        self.history={}
-        self.wallet={}
-
-    def __init__(self, login:str, password:str,starting_funds:float,date:datetime.date):
+    def __init__(self, login:str, password:str,starting_funds:float,date:datetime.date=datetime.date(2001,1,10)):
         self.login = login
         self.password = password
         self.starting_funds =starting_funds
