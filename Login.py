@@ -60,6 +60,7 @@ def login(currentUser:User)->bool:
 
 LoginScreen=Tk()
 LoginScreen.title("Zaloguj się lub zarejestruj")
+LoginScreen.configure(background="dark gray")
 LoginScreen.minsize(800,500)
 Label(LoginScreen,text="Login").grid(row=0)
 Label(LoginScreen,text="Password").grid(row=1)

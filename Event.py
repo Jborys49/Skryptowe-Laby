@@ -12,6 +12,9 @@ def fetch_and_save_stock_data(symbol:str, date: datetime.date)->dict:
     stock_start=(date-datetime.timedelta(days=60)).strftime('%Y-%m-%d')
     stock_end=date.strftime('%Y-%m-%d')
     stock_data = yf.download(symbol, start=stock_start, end=stock_end)
+    del stock_data['Adj Close']
+    del stock_data['Open']
+    del stock_data['Close']
     return stock_data
 
 
@@ -66,5 +69,5 @@ def end_session(currentUser:User):
     file.close()
 
 #fetch_and_save_stock_data('GME',datetime.date(2005,1,1))
-print(fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))
+#print(fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))
 #plots = get_plots('GME',fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))
