@@ -3,61 +3,46 @@ import datetime
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from User import User
 import pickle
+import pandas as pd
 
 folder_path='Stock_Users'
-def fetch_and_save_stock_data(symbol:str, date: datetime.date)->dict:
+def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFrame,int]:
     # Fetch stock data from Yahoo Finance
-    stock_start=(date-datetime.timedelta(days=60)).strftime('%Y-%m-%d')
-    stock_end=date.strftime('%Y-%m-%d')+datetime.timedelta(days=1)
+    stock_start=(date-datetime.timedelta(days=60))
+    stock_end=(date+datetime.timedelta(days=1))
     stock_data = yf.download(symbol, start=stock_start, end=stock_end)
     del stock_data['Adj Close']
     del stock_data['Open']
     del stock_data['Close']
-    return stock_data
+    last_volume=stock_data['Volume'].tail(1)
+    del stock_data['Volume']
+    return stock_data,last_volume
 
 
-def get_plots(symbol:str,stock_data: pd.DataFrame) -> dict:
-    plots = {}
+def get_plots(symbol:str,stock_data: pd.DataFrame):
+    plt.plot(stock_data.index, stock_data['High'], label='High Prices', color='blue')
 
-    # Plot the last week of data
-    last_week_data = stock_data[-7:]
-    fig_last_week= plt.figure(figsize=(10, 5))
-    plt.plot(last_week_data.index, last_week_data['High'], label='High Price')
-    plt.plot(last_week_data.index, last_week_data['Low'], label='Low Price')
-    plt.title(f'{symbol} Stock Prices - Last Week')
+    # Plot low prices
+    plt.plot(stock_data.index, stock_data['Low'], label='Low Prices', color='red')
+
+    # Set title and labels
     plt.xlabel('Date')
     plt.ylabel('Price')
-    plt.legend()
-    plots['last_week'] = fig_last_week
-    plt.close(fig_last_week)
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))  # Major ticks on Mondays
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format dates
 
-    # Plot the last month of data
-    last_month_data = stock_data[-30:]
-    fig_last_month = plt.figure(figsize=(10, 5))
-    plt.plot(last_month_data.index, last_month_data['High'], label='High Price')
-    plt.plot(last_month_data.index, last_month_data['Low'], label='Low Price')
-    plt.title(f'{symbol} Stock Prices - Last Month')
-    plt.xlabel('Date')
-    plt.ylabel('Price')
+    # Rotate date labels for better readability
+    plt.xticks(rotation=45,fontsize=6)
+    # Add legend
     plt.legend()
-    plots['last_month'] = fig_last_month
-    plt.close(fig_last_month)
 
-    # Plot the last 2 months of data
-    last_two_months_data = stock_data[-60:]
-    fig_last_two_months = plt.figure(figsize=(10, 5))
-    plt.plot(last_two_months_data.index, last_two_months_data['High'], label='High Price')
-    plt.plot(last_two_months_data.index, last_two_months_data['Low'], label='Low Price')
-    plt.title(f'{symbol} Stock Prices - Last 2 Months')
-    plt.xlabel('Date')
-    plt.ylabel('Price')
-    plt.legend()
-    plots['last_two_months'] = fig_last_two_months
-    plt.close(fig_last_two_months)
+    # Show the plot
+    plt.savefig('Stock_Graphs/'+symbol+'2m.png')
 
-    return plots
 
 def end_session(currentUser:User):
     '''method saves the user to teh databes- used in relogging and closing the program'''
@@ -69,5 +54,8 @@ def end_session(currentUser:User):
     file.close()
 
 #fetch_and_save_stock_data('GME',datetime.date(2005,1,1))
-#print(fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))
+bingo,bango=fetch_and_save_stock_data('GME',datetime.date(2005,1,6))
+#print(bingo)
+get_plots('GME',bingo)
+print('bruh')
 #plots = get_plots('GME',fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))
