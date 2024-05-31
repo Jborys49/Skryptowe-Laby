@@ -5,6 +5,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from decimal import Decimal
 import pickle
+from Interface import Interface
 from User import User
 import os
 
@@ -22,18 +23,20 @@ def check_password(login:str,password:str)->User:
     return password==currentUser.get_password()
 
 
-def return_user(login:str,password:str)->User:
+def login(login:str,password:str):
     global currentUser
     '''method returns user if user exists and password matches,else throws error'''
     if check_for_user(login):
         if check_password(login,password):
             user_file = open(folder_path + "\\" + login,"rb")
             currentUser = pickle.load(user_file)
-            return currentUser
+            inter=Interface(currentUser)
+            inter.mainloop()
         else:
             raise Exception("Wrong password")
     else:
         raise Exception("User not registered in system")
+
 def register_user(login:str,password:str,starting_funds:float,date:str)->User:
     '''registers a new user in the database if the login isnt already taken'''
     if check_for_user(login):
@@ -53,8 +56,7 @@ def end_session(currentUser:User)->bool:
     file.close()
     return True
 
-def login(currentUser:User)->bool:
-    return True
+
 #newUser=register_user("bingo","bango",200.0)
 #end_session(register_user("bingo","bango",200.0))
 
@@ -69,7 +71,7 @@ LoginVal=tkinter.Entry(LoginScreen)
 LoginVal.grid(row=0,column=1)
 PasswordVal=tkinter.Entry(LoginScreen)
 PasswordVal.grid(row=1,column=1)
-LoginButton=Button(LoginScreen,text="Zaloguj się",command=lambda:return_user(LoginVal.get(),PasswordVal.get()))
+LoginButton=Button(LoginScreen,text="Zaloguj się",command=lambda:login(LoginVal.get(),PasswordVal.get()))
 LoginButton.grid(row=3)
 
 RegisterLogin=tkinter.Entry(LoginScreen)
