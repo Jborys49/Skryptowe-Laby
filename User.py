@@ -9,7 +9,7 @@ class User:
         self.currentdate=date
         self.wallet={}
         self.history=[]
-    def purchase(self,name:str,price:float, nr_of_shares:int)->bool:
+    def purchase(self,name:str,price:Decimal, nr_of_shares:int)->bool:
         '''This method is used to purchase a number of stocks. Returns true if purchase is succesfull
          and false when funds are insufficient. Also updates the history of user purchases'''
         overall_price = Decimal(price*nr_of_shares).quantize(Decimal('1.00'))
@@ -25,7 +25,7 @@ class User:
                 self.wallet[name]['shares']=self.wallet[name]['shares']+nr_of_shares
                 self.wallet[name]['paid']=self.wallet[name]['paid']+overall_price
             return True
-    def sell(self,name:str,nr_of_shares:int,price:float)->bool:
+    def sell(self,name:str,price:Decimal,nr_of_shares:int)->bool:
         '''This method sells and upddates the current funds and the history of user purchases.
         If user does not have any stocks of the required item, or not enough shares, the function returns false'''
         overall_price = Decimal(price * nr_of_shares).quantize(Decimal('1.00'))
@@ -42,7 +42,8 @@ class User:
                 if self.wallet[name]['shares']==0:
                     del self.wallet[name]
                 return True
-
+    def get_number_of_stock(self,stock:str):
+        return self.wallet[stock]['shares']
     def get_date(self)->datetime.date:
         return self.currentdate
     def next_day(self):
