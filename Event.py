@@ -17,12 +17,18 @@ def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFra
     del stock_data['Adj Close']
     del stock_data['Open']
     del stock_data['Close']
-    last_volume=stock_data['Volume'].tail(1)
+    last_volume=stock_data['Volume'].tail(1).iloc[0]
     del stock_data['Volume']
     return stock_data,last_volume
 
+def plot_stock(symbol:str, stock_data: pd.DataFrame):
+    if not os.path.isfile(os.path.join('Stock_Graphs/',symbol + '2m.png')):
+        get_plots('Stock_Graphs/' + symbol + '2m.png',stock_data)
+        get_plots('Stock_Graphs/' + symbol + '1m.png', stock_data.tail(30))
+        get_plots('Stock_Graphs/' + symbol + '1w.png', stock_data.tail(7))
 
-def get_plots(symbol:str,stock_data: pd.DataFrame):
+def get_plots(file_path:str,stock_data: pd.DataFrame):
+    plt.figure(figsize=(6,4))
     plt.plot(stock_data.index, stock_data['High'], label='High Prices', color='blue')
 
     # Plot low prices
@@ -39,9 +45,8 @@ def get_plots(symbol:str,stock_data: pd.DataFrame):
     plt.xticks(rotation=45,fontsize=6)
     # Add legend
     plt.legend()
-
-    # Show the plot
-    plt.savefig('Stock_Graphs/'+symbol+'2m.png')
+    plt.savefig(file_path)
+    plt.close()
 
 
 def end_session(currentUser:User):
@@ -54,8 +59,8 @@ def end_session(currentUser:User):
     file.close()
 
 #fetch_and_save_stock_data('GME',datetime.date(2005,1,1))
-bingo,bango=fetch_and_save_stock_data('GME',datetime.date(2005,1,6))
+bingo,bango=fetch_and_save_stock_data('GOOG',datetime.date(2005,1,10))
+print(bango)
 #print(bingo)
-get_plots('GME',bingo)
-print('bruh')
+#plot_stock('GME',bingo)
 #plots = get_plots('GME',fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))

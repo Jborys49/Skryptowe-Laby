@@ -1,7 +1,7 @@
 import datetime
 from decimal import Decimal
 class User:
-    def __init__(self, login:str, password:str,starting_funds:Decimal,date:datetime.date=datetime.date(2001,1,10)):
+    def __init__(self, login:str, password:str,starting_funds:Decimal,date:datetime.date=datetime.date(2005,1,10)):
         self.login = login
         self.password = password
         self.starting_funds =Decimal(starting_funds).quantize(Decimal('1.00'))

@@ -3,11 +3,16 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from User import User
+from StockDetails import StockDetails
 import Event
 import os
-stocks="TEAR,SMA,CABG,UAPH,FSL.B,DRY,SUAI,PRAI,NGD,IWA,SPOK,NP,INPC,AMZGQ,NLC,FENC,ORA,ZIPR,OHAI,CPNO,MPCCQ,MKTX,ATB,USSPQ,MTL,GME.B,LONG,FOXH,DWA,CLMS,BBW,XNNHQ,NRF,GBCS,CUBE,TWGP,SHO,VNUS,BDAY,LOCMQ,JRJC,ICOPQ,GGBMQ,ANSW,TPGI,RTWIQ,ILSE,GKIS,PSBH,INVA,ARCC,ACFC,YMI,PSPT,NVSL,PRSG,CLWA,JOBS,JMDT,CPL,VSCN,TTM,VLLY,EEEE,BECN,SQBGQ,SPSX,BLIBQ,CMNR,STON,KUHM,OCLR,IOC,TSTC"
+stocks="AAPL,MSFT,GOOG,AMZN,JNJ,WMT,JPM,PG,XOM,T,HD,DIS,BAC,VZ,INTC,KO,CSCO,MRK,CVX,ORCL,ABT,NKE,MCD,IBM,MMM,CAT,UNH,HON,C,GE,DE,CL,MO,AXP,USB,GS,PFE,WFC,BMY,SBUX,TXN,SYY,MDT,QCOM,LLY,UPS,MS,DHR,TGT,COST,CVS,LMT,ADP,ISRG,SCHW,SPGI,ITW,RTN,NSC,AMGN,GILD,JCI,GPC,AFL,BDX,CSX,EMR,BEN,TROW,COF,FIS,AON,KMB,ADM,AMT,BK,FDX,EMN"
 stocks=stocks.split(",")
 
+def get_stock_details(frame: tk.Frame, user: User,stock:str):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    StockDetails(frame,user,stock).pack(fill=tk.BOTH,expand=1)
 class BuyScreen(tk.Frame):
     def __init__(self, parent,user:User):
         super().__init__(parent)
@@ -42,10 +47,10 @@ class BuyScreen(tk.Frame):
         canvas.configure(yscrollcommand=scrollbar.set)
 
         for stock in stocks:
-            button = tk.Button(scrollable_frame, text=stock)
+            button = tk.Button(scrollable_frame, text=stock,command=
+            lambda stc=stock:get_stock_details(right_frame,self.user,stc))
             button.pack(fill=tk.X, padx=5, pady=2)
 
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
 
