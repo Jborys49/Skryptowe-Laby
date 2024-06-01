@@ -3,7 +3,6 @@ from decimal import Decimal
 from tkinter import messagebox
 from tkinter import ttk
 from User import User
-from StockDetails import StockDetails
 import Event
 import os
 
@@ -62,7 +61,7 @@ class Transaction(tk.Tk):
             determiner.pack()
             commence = tk.Button(self, text="SELL",command=lambda:sell(self,self.user,self.stock,self.price,determiner.get()))
             commence.pack()
-tester=User('bingo','bango',Decimal(200.0))
+'''tester=User('bingo','bango',Decimal(200.0))
 tester.purchase('GOOG',Decimal(2.97),10)
 inte=Transaction(tester,'GOOG',Decimal(2.97),1)
-inte.mainloop()
+inte.mainloop()'''

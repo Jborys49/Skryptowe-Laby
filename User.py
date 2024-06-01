@@ -64,5 +64,7 @@ class User:
         return self.currentfunds
     def set_current_funds(self, new_current_funds:Decimal):
         self.currentfunds=new_current_funds
+    def get_wallet(self):
+        return self.wallet
     def print(self):
         print(self.login, self.password, self.get_current_funds())

@@ -6,6 +6,8 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 from tkinter import ttk
 from User import User
+from Transaction import Transaction
+from decimal import Decimal
 import Event
 import os
 
@@ -23,6 +25,9 @@ def embed_graph(frame:tk.Frame,image:ImageTk.PhotoImage):
     imglbl=tk.Label(frame,image=image)
     imglbl.image=image
     imglbl.pack()
+def buy_stock(user:User,stock:str,price:Decimal):
+    seller=Transaction(user,stock,price,0)
+    seller.mainloop()
 class StockDetails(tk.Frame):
     def __init__(self, parent:tk.Frame,user:User,stock:str):
         super().__init__(parent)
@@ -69,6 +74,6 @@ class StockDetails(tk.Frame):
         button3 = Button(right_frame, text="2 Months",command=lambda:embed_graph(left_frame,self.month2plot))
         button3.pack(pady=5,fill=tk.BOTH, expand=True)
 
-        button4 = Button(right_frame, text="BUY")
+        button4 = Button(right_frame, text="BUY",command=lambda:buy_stock(self.user,self.stock,Event.get_price(self.stock,self.user.get_date(),0)))
         button4.pack(pady=5,fill=tk.BOTH, expand=True)
 

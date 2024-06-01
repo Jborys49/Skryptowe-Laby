@@ -7,6 +7,7 @@ import os
 
 from User import User
 from Buy_Screen import BuyScreen
+from Wallet import Wallet
 from StockDetails import StockDetails
 import Event
 
@@ -25,6 +26,10 @@ def execute_buying(frame: tk.Frame, user: User):
         widget.destroy()
     BuyScreen(frame,user).pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
+def execute_selling(frame: tk.Frame, user: User):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    Wallet(frame,user).pack(side=tk.TOP, fill=tk.BOTH,expand=True)
 class Interface(tk.Tk):
 
     def __init__(self,user:User):
@@ -54,7 +59,7 @@ class Interface(tk.Tk):
         buy_button = tk.Button(top_frame, text="Buy",command=lambda:execute_buying(bottom_frame, self.user))
         buy_button.pack(side=tk.LEFT, expand=True)
 
-        sell_button = tk.Button(top_frame, text="Sell")
+        sell_button = tk.Button(top_frame, text="Sell",command=lambda:execute_selling(bottom_frame, self.user))
         sell_button.pack(side=tk.LEFT, expand=True)
         clear_frame(bottom_frame)
 
