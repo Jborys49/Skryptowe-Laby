@@ -1,18 +1,12 @@
-import time
 import tkinter as tk
-import yfinance as yf
-from PIL import ImageTk, Image
-from tkinter import messagebox
-from tkinter import ttk
+
 from User import User
-from Transaction import Transaction
-from decimal import Decimal
 import Event
-import os
 
 def changePassword(password1: str, password2: str,user: User,master:tk.Tk) -> None:
     if password1 == password2:
         user.set_password(password1)
+        Event.save_user(user)
         master.destroy()
     else:
         error = tk.Tk()

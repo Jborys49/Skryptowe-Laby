@@ -19,8 +19,6 @@ def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFra
     del stock_data['Adj Close']
     del stock_data['Open']
     del stock_data['Close']
-    for index, row in stock_data.loc[:, ['Volume']].iterrows():
-        print(row['Volume'])
     last_volume=stock_data['Volume'].tail(1).iloc[0]
     del stock_data['Volume']
     return stock_data,last_volume
@@ -65,7 +63,6 @@ def get_price(stock:str,date:datetime.date,type:int)->Decimal:
     '''0 for buying 1 for selling'''
     if type==0:
         price=yf.download(stock, start=(date-datetime.timedelta(days=7)), end=(date+datetime.timedelta(days=1)))
-        print(price)
         price=price['High'][-1]
     else:
         price = yf.download(stock, start=date, end=(date + datetime.timedelta(days=1)))

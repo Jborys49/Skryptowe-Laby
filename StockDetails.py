@@ -1,15 +1,12 @@
-import time
 import tkinter as tk
 from tkinter import *
 import yfinance as yf
 from PIL import ImageTk, Image
-from tkinter import messagebox
-from tkinter import ttk
+
 from User import User
 from Transaction import Transaction
 from decimal import Decimal
 import Event
-import os
 
 def get_name(stock:str)->str:
     try:

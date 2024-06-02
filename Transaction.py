@@ -1,9 +1,8 @@
 import tkinter as tk
 from decimal import Decimal
-from tkinter import messagebox
-from tkinter import ttk
+
 from User import User
-import os
+
 
 def buy(master:tk.Tk,user:User,name:str,price:Decimal, nr_of_shares:str):
     nr_of_shares=int(nr_of_shares)

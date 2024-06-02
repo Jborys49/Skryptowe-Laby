@@ -10,8 +10,8 @@ class StockTradingInterface(tk.Tk):
         self.minsize(800, 500)
         log = Login(self)
         log.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-        self.mainloop()
         self.protocol("WM_DELETE_WINDOW", self.quit)
+        self.mainloop()
 
     def quit(self):
         self.clean_pdf()
