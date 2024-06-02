@@ -2,6 +2,7 @@ import os
 import datetime
 import yfinance as yf
 import pandas as pd
+import tkinter as tk
 from decimal import Decimal
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -68,10 +69,3 @@ def get_price(stock:str,date:datetime.date,type:int)->Decimal:
         price=price['Low'][-1]
     return Decimal(price).quantize(Decimal('1.00'))
 
-#fetch_and_save_stock_data('GME',datetime.date(2005,1,1))
-#bingo,bango=fetch_and_save_stock_data('GOOG',datetime.date(2005,1,10))
-#print(bango)
-#print(bingo)
-#plot_stock('GME',bingo)
-#plots = get_plots('GME',fetch_and_save_stock_data('GME',datetime.date(2005,1,8)))
-print(get_price("GOOG",datetime.date(2005,1,10),1))

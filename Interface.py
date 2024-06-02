@@ -1,15 +1,11 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
 from decimal import Decimal
 import os
 
 from User import User
 from Buy_Screen import BuyScreen
 from Wallet import Wallet
-from StockDetails import StockDetails
-import Event
 
 
 def clear_frame(frame: tk.Frame):

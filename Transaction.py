@@ -3,7 +3,6 @@ from decimal import Decimal
 from tkinter import messagebox
 from tkinter import ttk
 from User import User
-import Event
 import os
 
 def buy(master:tk.Tk,user:User,name:str,price:Decimal, nr_of_shares:str):
@@ -15,9 +14,14 @@ def buy(master:tk.Tk,user:User,name:str,price:Decimal, nr_of_shares:str):
         error.minsize(200,100)
         tk.Label(error,text="Funds Insufficient!").pack()
         tk.Button(error,text="OK",command=lambda:error.destroy()).pack()
-def sell(master:tk.Tk,user:User,name:str,price:Decimal, nr_of_shares:str):
+def sell(master:tk.Tk,user:User,stock:str,price:Decimal, nr_of_shares:str,sell_frame:tk.Frame,label:tk.Label):
     nr_of_shares=int(nr_of_shares)
-    if user.sell(name,price,nr_of_shares):
+    if user.sell(stock,price,nr_of_shares):
+        if stock in user.get_wallet():
+            label.config(text='Stock:'+stock+" with shares: "+ str(user.get_wallet()[stock]["shares"])+
+                             " Paid for stocks: "+ str(user.get_wallet()[stock]["paid"]))
+        else:
+            sell_frame.destroy()
         master.destroy()
     else:
         error=tk.Tk()
@@ -27,7 +31,7 @@ def sell(master:tk.Tk,user:User,name:str,price:Decimal, nr_of_shares:str):
 class Transaction(tk.Tk):
     '''class that handles transactions (buying and selling)
      0 type is a buy transaction and 1 type is a selling transaction'''
-    def __init__(self,user:User,stock:str,price:Decimal,type:int):
+    def __init__(self,user:User,stock:str,price:Decimal,type:int,sell_frame=None,label=None):
         super().__init__()
         self.user=user
         self.minsize(200,100)
@@ -59,9 +63,5 @@ class Transaction(tk.Tk):
             action.pack()
             determiner = tk.Entry(self)
             determiner.pack()
-            commence = tk.Button(self, text="SELL",command=lambda:sell(self,self.user,self.stock,self.price,determiner.get()))
+            commence = tk.Button(self, text="SELL",command=lambda:sell(self,self.user,self.stock,self.price,determiner.get(),sell_frame,label))
             commence.pack()
-'''tester=User('bingo','bango',Decimal(200.0))
-tester.purchase('GOOG',Decimal(2.97),10)
-inte=Transaction(tester,'GOOG',Decimal(2.97),1)
-inte.mainloop()'''

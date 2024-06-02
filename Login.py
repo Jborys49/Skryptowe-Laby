@@ -1,8 +1,5 @@
 import datetime
-import tkinter
-from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
+import tkinter as tk
 from decimal import Decimal
 import pickle
 from Interface import Interface
@@ -42,7 +39,7 @@ def register_user(login:str,password:str,starting_funds:float,date:str)->User:
     if check_for_user(login):
         raise Exception("Login already taken")
     stock_date = date.strftime('%Y-%m-%d')
-    currentUser=User(login,password,starting_funds,stock_date)
+    currentUser=User(login,password,Decimal(starting_funds).quantize(Decimal('1.00')),stock_date)
     return currentUser
 
 
@@ -57,38 +54,36 @@ def end_session(currentUser:User)->bool:
     return True
 
 
-#newUser=register_user("bingo","bango",200.0)
-#end_session(register_user("bingo","bango",200.0))
+class Login(tk.Frame):
+    def __init__(self,parent):
+        super().__init__(parent)
+        LoginScreen=tk.Frame(self)
+        LoginScreen.pack(side=tk.TOP,fill=tk.BOTH,expand=1)
+        #LoginScreen.title("Zaloguj się lub zarejestruj")
+        LoginScreen.configure(background="dark gray")
+        #LoginScreen.minsize(800,500)
+        tk.Label(LoginScreen,text="Login").grid(row=0)
+        tk.Label(LoginScreen,text="Password").grid(row=1)
+        #if i define the grid in the same row as the entry its not a entry but a none
+        LoginVal=tk.Entry(LoginScreen)
+        LoginVal.grid(row=0,column=1)
+        PasswordVal=tk.Entry(LoginScreen)
+        PasswordVal.grid(row=1,column=1)
+        LoginButton=tk.Button(LoginScreen,text="Zaloguj się",command=lambda:login(LoginVal.get(),PasswordVal.get()))
+        LoginButton.grid(row=3)
 
-LoginScreen=Tk()
-LoginScreen.title("Zaloguj się lub zarejestruj")
-LoginScreen.configure(background="dark gray")
-LoginScreen.minsize(800,500)
-Label(LoginScreen,text="Login").grid(row=0)
-Label(LoginScreen,text="Password").grid(row=1)
-#if i define the grid in the same row as the entry its not a entry but a none
-LoginVal=tkinter.Entry(LoginScreen)
-LoginVal.grid(row=0,column=1)
-PasswordVal=tkinter.Entry(LoginScreen)
-PasswordVal.grid(row=1,column=1)
-LoginButton=Button(LoginScreen,text="Zaloguj się",command=lambda:login(LoginVal.get(),PasswordVal.get()))
-LoginButton.grid(row=3)
-
-RegisterLogin=tkinter.Entry(LoginScreen)
-RegisterPassword=tkinter.Entry(LoginScreen)
-RegisterBudget=tkinter.Entry(LoginScreen)
-RegisterDate=tkinter.Entry(LoginScreen)
-Label(LoginScreen,text="Register Login").grid(row=4)
-RegisterLogin.grid(row=4,column=1)
-Label(LoginScreen,text="Register Password").grid(row=5)
-RegisterPassword.grid(row=5,column=1)
-Label(LoginScreen,text="Register Budget").grid(row=6)
-RegisterBudget.grid(row=6,column=1)
-Label(LoginScreen,text="Register Date").grid(row=7)
-RegisterDate.grid(row=7,column=1)
-RegisterButton=Button(LoginScreen,text="Zarejestruj się",command=lambda:register_user(RegisterLogin.get(),RegisterPassword.get(),RegisterDate.get()))
-RegisterButton.grid(row=8)
-LoginScreen.mainloop()
-#newUser=return_user("bingo","bango")
-#newUser.print()
-#end_session(newUser)
+        RegisterLogin=tk.Entry(LoginScreen)
+        RegisterPassword=tk.Entry(LoginScreen)
+        RegisterBudget=tk.Entry(LoginScreen)
+        RegisterDate=tk.Entry(LoginScreen)
+        tk.Label(LoginScreen,text="Register Login").grid(row=4)
+        RegisterLogin.grid(row=4,column=1)
+        tk.Label(LoginScreen,text="Register Password").grid(row=5)
+        RegisterPassword.grid(row=5,column=1)
+        tk.Label(LoginScreen,text="Register Budget").grid(row=6)
+        RegisterBudget.grid(row=6,column=1)
+        tk.Label(LoginScreen,text="Register Date").grid(row=7)
+        RegisterDate.grid(row=7,column=1)
+        RegisterButton=tk.Button(LoginScreen,text="Zarejestruj się",command=lambda:register_user(RegisterLogin.get(),RegisterPassword.get(),RegisterDate.get()))
+        RegisterButton.grid(row=8)
+        LoginScreen.mainloop()

@@ -1,17 +1,18 @@
 import tkinter as tk
 from decimal import Decimal
 from tkinter import *
-from tkinter import messagebox
 from tkinter import ttk
 from User import User
-from StockDetails import StockDetails
+from Transaction import Transaction
 import Event
-import os
-
+def sell_stock(frame,label,user:User,stock:str,price:Decimal):
+    seller=Transaction(user,stock,price,1,frame,label)
+    seller.mainloop()
 class Wallet(tk.Frame):
     def __init__(self, parent,user:User):
         super().__init__(parent)
         self.user = user
+        self.parent = parent
 
         self.pack(fill=tk.BOTH, expand=1)
         self.canvas = tk.Canvas(self)
@@ -35,33 +36,14 @@ class Wallet(tk.Frame):
         for entry in self.wallet:
             frame = tk.Frame(self.scrollable_frame)
             label = tk.Label(frame, text='Stock:'+entry+" with shares: "+ str(self.wallet[entry]["shares"])+
-                             " Price: "+ str(self.wallet[entry]["paid"]))
+                             " Paid for stocks: "+ str(self.wallet[entry]["paid"]))
             button1 = tk.Button(frame, text="View stock trend")
-            button2 = tk.Button(frame, text="Sell")
+            button2 = tk.Button(frame, text="Sell",command=lambda:sell_stock(frame,label,self.user,entry,
+                                                                             Event.get_price(entry,self.user.get_date(),1)))
 
-            label.pack(side="left", padx=5)
-            button1.pack(side="left", padx=5)
-            button2.pack(side="left", padx=5)
+            label.pack(side="left",fill=tk.X, padx=5)
+            button1.pack(side="right", padx=5)
+            button2.pack(side="right", padx=5)
 
             frame.pack(fill="x", pady=5)
 
-'''inet=tk.Tk()
-tester=User('bingo','bango',Decimal(200.0))
-tester.purchase('GOOG',Decimal(2.97),10)
-tester.purchase('GOOa',Decimal(0.01),10)
-tester.purchase('GOOb',Decimal(0.01),10)
-tester.purchase('GOOc',Decimal(0.01),10)
-tester.purchase('GOOd',Decimal(0.01),10)
-tester.purchase('GOOG',Decimal(0.01),10)
-tester.purchase('GOOe',Decimal(0.01),10)
-tester.purchase('GOOf',Decimal(0.01),10)
-tester.purchase('GOOG1',Decimal(2.97),10)
-tester.purchase('GOOa1',Decimal(0.01),10)
-tester.purchase('GOOb1',Decimal(0.01),10)
-tester.purchase('GOOc1',Decimal(0.01),10)
-tester.purchase('GOOd1',Decimal(0.01),10)
-tester.purchase('GOOG1',Decimal(0.01),10)
-tester.purchase('GOOe1',Decimal(0.01),10)
-tester.purchase('GOOf1',Decimal(0.01),10)
-bruh=Wallet(inet,tester).pack()
-inet.mainloop()'''
