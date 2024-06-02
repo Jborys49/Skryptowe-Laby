@@ -16,7 +16,7 @@ class User:
         if overall_price>self.currentfunds:
             return False
         else:
-            self.currentfunds=(self.currentfunds-overall_price).quantize(Decimal('1.00'))
+            self.currentfunds=(self.currentfunds-Decimal(overall_price)).quantize(Decimal('1.00'))
             self.history.append({'name':name,'price':price,'shares':nr_of_shares,
                                  'date':self.currentdate,'is_purchase':True})
             if name not in self.wallet:
@@ -53,7 +53,7 @@ class User:
     def get_login(self):
         return self.login
     def get_profit_percent(self)->float:
-        return (float(self.currentfunds) / float(self.starting_funds))*100.0
+        return (float(self.currentfunds-self.starting_funds) / float(self.starting_funds))*100.0
     def get_password(self):
         return self.password
     def set_password(self,new_password):
@@ -66,5 +66,7 @@ class User:
         self.currentfunds=new_current_funds
     def get_wallet(self):
         return self.wallet
+    def set_date(self,newdate=datetime.date):
+        self.currentdate=newdate
     def print(self):
         print(self.login, self.password, self.get_current_funds())
