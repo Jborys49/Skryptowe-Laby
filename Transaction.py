@@ -3,17 +3,14 @@ import customtkinter as ctk
 from decimal import Decimal
 
 from User import User
-
+from ErrorPopup import ErrorPopup
 
 def buy(master:ctk.CTk,user:User,name:str,price:Decimal, nr_of_shares:str):
     nr_of_shares=int(nr_of_shares)
     if user.purchase(name,price,nr_of_shares):
         master.destroy()
     else:
-        error=ctk.CTk()
-        error.minsize(200,100)
-        ctk.CTkLabel(error,text="Funds Insufficient!").pack()
-        ctk.CTkButton(error,text="OK",command=lambda:error.destroy()).pack()
+        error=ErrorPopup('Not enough Funds to sell')
 def sell(master:ctk.CTk,user:User,stock:str,price:Decimal, nr_of_shares:str,sell_frame:ctk.CTkFrame,label:ctk.CTkLabel):
     nr_of_shares=int(nr_of_shares)
     if user.sell(stock,price,nr_of_shares):
@@ -24,10 +21,7 @@ def sell(master:ctk.CTk,user:User,stock:str,price:Decimal, nr_of_shares:str,sell
             sell_frame.destroy()
         master.destroy()
     else:
-        error=ctk.CTk()
-        error.minsize(200,100)
-        tk.Label(error,text="Not Enough Stock!").pack()
-        tk.Button(error,text="OK",command=lambda:error.destroy()).pack()
+        error=ErrorPopup('Not enough stock ot sell')
 class Transaction(ctk.CTk):
     '''class that handles transactions (buying and selling)
      0 type is a buy transaction and 1 type is a selling transaction'''

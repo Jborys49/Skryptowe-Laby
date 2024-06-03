@@ -38,9 +38,9 @@ def execute_profile(frame:ctk.CTkFrame, user: User):
     Profile(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH,expand=True)
 def logout(frame: ctk.CTkFrame,user:User):
     from Login import Login
-    Event.save_user(user)
     for widget in frame.winfo_children():
         widget.destroy()
+    Event.save_user(user)
     Login(frame)
 class Interface(ctk.CTkFrame):
 
@@ -79,10 +79,3 @@ class Interface(ctk.CTkFrame):
         date_label.pack(side=ctk.LEFT,expand=True)
         clear_bottom(bottom_frame)
 
-'''ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("green")
-test=ctk.CTk()
-test.minsize(800,500)
-testLog=Interface(test,User("bruh","man",Decimal(200.0)))
-testLog.pack()
-test.mainloop()'''

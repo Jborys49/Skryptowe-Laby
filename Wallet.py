@@ -1,8 +1,8 @@
-import tkinter as tk
+import datetime
 import customtkinter as ctk
 from decimal import Decimal
-from tkinter import *
-from tkinter import ttk
+from PIL import ImageTk, Image
+
 from User import User
 from Transaction import Transaction
 import Event
@@ -28,7 +28,7 @@ class Wallet(ctk.CTkFrame):
         )
 
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        self.scrollable_frame.pack(fill=tk.BOTH,expand=True)
+        self.scrollable_frame.pack(fill=ctk.BOTH,expand=True)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
         self.canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
@@ -39,12 +39,12 @@ class Wallet(ctk.CTkFrame):
             frame = ctk.CTkFrame(self.scrollable_frame)
             label = ctk.CTkLabel(frame, text='Stock:'+entry+" with shares: "+ str(self.wallet[entry]["shares"])+
                              " Paid for stocks: "+ str(self.wallet[entry]["paid"]))
-            button1 = ctk.CTkButton(frame, text="View stock trend")
+            #button1 = ctk.CTkButton(frame, text="View stock trend",command=lambda:stock_trend(entry,self.user.get_date()) )
             button2 = ctk.CTkButton(frame, text="Sell",command=lambda:sell_stock(frame,label,self.user,entry,
                                                                              Event.get_price(entry,self.user.get_date(),1)))
 
-            label.pack(side="left",fill=tk.X, padx=5)
-            button1.pack(side="right", padx=5)
+            label.pack(side="left",fill=ctk.X, padx=5)
+            #button1.pack(side="right", padx=5)
             button2.pack(side="right", padx=5)
 
             frame.pack(fill="x", pady=5)

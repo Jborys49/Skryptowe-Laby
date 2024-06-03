@@ -1,4 +1,3 @@
-import tkinter as tk
 import customtkinter as ctk
 import yfinance as yf
 from PIL import ImageTk, Image

@@ -1,8 +1,6 @@
 import os
 import datetime
 import yfinance as yf
-import pandas as pd
-import tkinter as tk
 from decimal import Decimal
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -65,7 +63,7 @@ def get_price(stock:str,date:datetime.date,type:int)->Decimal:
         price=yf.download(stock, start=(date-datetime.timedelta(days=7)), end=(date+datetime.timedelta(days=1)))
         price=price['High'][-1]
     else:
-        price = yf.download(stock, start=date, end=(date + datetime.timedelta(days=1)))
+        price = yf.download(stock, start=(date-datetime.timedelta(days=7)), end=(date + datetime.timedelta(days=1)))
         price=price['Low'][-1]
     return Decimal(price).quantize(Decimal('1.00'))
 

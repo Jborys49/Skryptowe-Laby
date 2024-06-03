@@ -3,6 +3,8 @@ import customtkinter as ctk
 import tkinter as tk
 from decimal import Decimal
 import pickle
+
+from ErrorPopup import ErrorPopup
 from Interface import Interface
 from User import User
 import Event
@@ -30,33 +32,38 @@ def login_user(login:str,password:str,parent:tk.Tk):
             currentUser = pickle.load(user_file)
             for widget in parent.winfo_children():
                 widget.destroy()
-            print(currentUser.get_date())
             inter=Interface(parent,currentUser)
-            inter.pack(side=tk.TOP,fill=tk.BOTH,expand=True)
+            inter.pack(side=ctk.TOP,fill=ctk.BOTH,expand=True)
         else:
-            raise Exception("Wrong password")
+            error=ErrorPopup("Incorrect password")
     else:
-        raise Exception("User not registered in system")
+        error=ErrorPopup("User not Registered")
 
-def register_user(login:str,password:str,starting_funds:float,date:str,parent:tk.Tk):
+def register_user(login:str,password:str,starting_funds:str,date:str,parent:tk.Tk):
     '''registers a new user in the database if the login isnt already taken'''
     if check_for_user(login):
-        error = tk.Tk()
-        error.minsize(200, 100)
-        tk.Label(error, text="Username already in use").pack()
-        tk.Button(error, text="OK", command=lambda: error.destroy()).pack()
+        error = ErrorPopup("Username already in Use")
     else:
-        stock_date = datetime.strptime(date,'%Y-%m-%d').date()
-        currentUser=User(login,password,Decimal(starting_funds).quantize(Decimal('1.00')),stock_date)
-        Event.save_user(currentUser)
-        login_user(login,password,parent)
-
+        try:
+            stock_date = datetime.strptime(date,'%Y-%m-%d').date()
+            if stock_date < datetime(2005,1,1).date() or stock_date > datetime(2010,1,1).date():
+                error=ErrorPopup("Date not in specified range of 2005 to 2009")
+        except:
+            error=ErrorPopup("Date format does not match")
+        else:
+            try:
+                starting_funds = float(starting_funds)
+            except:
+                error=ErrorPopup("Funds format does not match")
+            else:
+                currentUser = User(login, password, Decimal(starting_funds).quantize(Decimal('1.00')), stock_date)
+                Event.save_user(currentUser)
+                login_user(login, password, parent)
 
 
 
 class Login(ctk.CTkFrame):
     def __init__(self,parent):
-        print('Works')
         super().__init__(parent)
         self.parent=parent
 
@@ -87,34 +94,5 @@ class Login(ctk.CTkFrame):
         register_day.pack(side=ctk.TOP,  expand=True)
         btn_register = ctk.CTkButton(self, text="Register",
                                   command=lambda: register_user(register_login.get(), register_password.get(),
-                                                                register_year.get(),register_year.get()+"-"+register_month.get()+"-"+register_day.get(),self.parent))
+                                                                register_bud.get(),register_year.get()+"-"+register_month.get()+"-"+register_day.get(),self.parent))
         btn_register.pack(side=ctk.TOP)
-        '''tk.Label(LoginScreen,text="Login").grid(row=0)
-        tk.Label(LoginScreen,text="Password").grid(row=1)
-        LoginVal=tk.Entry(LoginScreen)
-        LoginVal.grid(row=0,column=1)
-        PasswordVal=tk.Entry(LoginScreen)
-        PasswordVal.grid(row=1,column=1)
-        LoginButton=tk.Button(LoginScreen,text="Log in",command=lambda:login_user(LoginVal.get(),PasswordVal.get(),self.parent))
-        LoginButton.grid(row=3)
-
-        RegisterLogin=tk.Entry(LoginScreen)
-        RegisterPassword=tk.Entry(LoginScreen)
-        RegisterBudget=tk.Entry(LoginScreen)
-        RegisterDate=tk.Entry(LoginScreen)
-        tk.Label(LoginScreen,text="Register Login").grid(row=4)
-        RegisterLogin.grid(row=4,column=1)
-        tk.Label(LoginScreen,text="Register Password").grid(row=5)
-        RegisterPassword.grid(row=5,column=1)
-        tk.Label(LoginScreen,text="Register Budget").grid(row=6)
-        RegisterBudget.grid(row=6,column=1)
-        tk.Label(LoginScreen,text="Register Date").grid(row=7)
-        RegisterDate.grid(row=7,column=1)
-        RegisterButton=tk.Button(LoginScreen,text="Register",command=lambda:register_user(RegisterLogin.get(),RegisterPassword.get(),float(RegisterBudget.get()),RegisterDate.get(),self.parent))
-        RegisterButton.grid(row=8)
-'''
-'''test=ctk.CTk()
-test.minsize(800,500)
-testLog=Login(test)
-testLog.pack()
-test.mainloop()'''
