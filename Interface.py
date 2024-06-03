@@ -1,5 +1,7 @@
 import tkinter as tk
+import customtkinter as ctk
 import os
+from decimal import Decimal
 
 from User import User
 from Buy_Screen import BuyScreen
@@ -8,61 +10,79 @@ from Profile import Profile
 import Event
 
 
-def next_day(frame: tk.Frame,user:User,label:tk.Label):
+def next_day(frame: ctk.CTkFrame,user:User,label:ctk.CTkLabel):
     for widget in frame.winfo_children():
         widget.destroy()
     for file in os.listdir('Stock_Graphs'):
         os.unlink(os.path.join('Stock_Graphs', file))
     user.next_day()
     Event.save_user(user)
-    label.config(text=user.get_date().strftime("%Y-%d-%m"))
-    tk.Label(frame, text="Click one of the buttons for functionality", font=("Arial", 32)).pack(fill=tk.BOTH,expand=1)
-def clear_bottom(frame: tk.Frame):
+    label.configure(text='Current Date: '+user.get_date().strftime("%Y-%d-%m"))
+    ctk.CTkLabel(frame, text="Click one of the buttons for functionality", font=("Arial", 32)).pack(fill=ctk.BOTH,expand=1)
+def clear_bottom(frame: ctk.CTkFrame):
     for widget in frame.winfo_children():
         widget.destroy()
-    tk.Label(frame, text="Click one of the buttons for functionality", font=("Arial", 32)).pack(fill=tk.BOTH, expand=1)
-def execute_buying(frame: tk.Frame, user: User):
+    ctk.CTkLabel(frame, text="Click one of the buttons for functionality", font=("Arial", 32)).pack(fill=ctk.BOTH, expand=1)
+def execute_buying(frame: ctk.CTkFrame, user: User):
     for widget in frame.winfo_children():
         widget.destroy()
-    BuyScreen(frame,user).pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    BuyScreen(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH, expand=True)
 
-def execute_selling(frame: tk.Frame, user: User):
+def execute_selling(frame: ctk.CTkFrame, user: User):
     for widget in frame.winfo_children():
         widget.destroy()
-    Wallet(frame,user).pack(side=tk.TOP, fill=tk.BOTH,expand=True)
-def execute_profile(frame:tk.Frame, user: User):
+    Wallet(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH,expand=True)
+def execute_profile(frame:ctk.CTkFrame, user: User):
     for widget in frame.winfo_children():
         widget.destroy()
-    Profile(frame,user).pack(side=tk.TOP, fill=tk.BOTH,expand=True)
-class Interface(tk.Frame):
+    Profile(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH,expand=True)
+def logout(frame: ctk.CTkFrame,user:User):
+    from Login import Login
+    Event.save_user(user)
+    for widget in frame.winfo_children():
+        widget.destroy()
+    Login(frame)
+class Interface(ctk.CTkFrame):
 
     def __init__(self,parent,user:User):
         super().__init__(parent)
         self.user = user
-        self.configure(bg="light blue")
-        self.pack(side=tk.TOP,fill=tk.BOTH, expand=1)
+        self.parent = parent
+        #self.configure(bg="light blue")
+        self.pack(side=ctk.TOP,fill=ctk.BOTH, expand=1)
         # Create the top frame for Buy, Sell, and Profile buttons
-        top_frame = tk.Frame(self, bg="lightgray",height=70)
+        top_frame = ctk.CTkFrame(self,height=70)
         top_frame.pack_propagate(False)
-        top_frame.pack(side=tk.TOP,fill=tk.X,padx=10,pady=10)
+        top_frame.pack(side=ctk.TOP,fill=ctk.X,padx=10,pady=10)
 
         # Create the bottom frame to fill the rest of the interface
-        bottom_frame = tk.Frame(self, bg="white")
-        bottom_frame.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        bottom_frame = ctk.CTkFrame(self)
+        bottom_frame.pack(side=ctk.BOTTOM, fill=ctk.BOTH, expand=True, padx=10, pady=10)
 
-        profile_button = tk.Button(top_frame, text="Profile",command=lambda:execute_profile(bottom_frame, self.user))
-        profile_button.pack(side=tk.LEFT, expand=True)
+        profile_button = ctk.CTkButton(top_frame, text="Profile",command=lambda:execute_profile(bottom_frame, self.user))
+        profile_button.pack(side=ctk.LEFT, expand=True)
 
 
-        day_button = tk.Button(top_frame, text="Next Day",command=lambda:next_day(bottom_frame,self.user,date_label))
-        day_button.pack(side=tk.LEFT, expand=True)
+        day_button = ctk.CTkButton(top_frame, text="Next Day",command=lambda:next_day(bottom_frame,self.user,date_label))
+        day_button.pack(side=ctk.LEFT, expand=True)
         # Create Buy, Sell, and Profile buttons with equal spacing
-        buy_button = tk.Button(top_frame, text="Buy",command=lambda:execute_buying(bottom_frame, self.user))
-        buy_button.pack(side=tk.LEFT, expand=True)
+        buy_button = ctk.CTkButton(top_frame, text="Buy",command=lambda:execute_buying(bottom_frame, self.user))
+        buy_button.pack(side=ctk.LEFT, expand=True)
 
-        sell_button = tk.Button(top_frame, text="Sell",command=lambda:execute_selling(bottom_frame, self.user))
-        sell_button.pack(side=tk.LEFT, expand=True)
+        sell_button = ctk.CTkButton(top_frame, text="Sell",command=lambda:execute_selling(bottom_frame, self.user))
+        sell_button.pack(side=ctk.LEFT, expand=True)
 
-        date_label=tk.Label(top_frame, text=self.user.get_date().strftime("%Y-%d-%m"))
-        date_label.pack(side=tk.LEFT,expand=True)
+        sell_button = ctk.CTkButton(top_frame, text="Logout", command=lambda: logout(self.parent, self.user))
+        sell_button.pack(side=ctk.BOTTOM, expand=True)
+
+        date_label=ctk.CTkLabel(top_frame, text="Current Date: "+self.user.get_date().strftime("%Y-%d-%m"))
+        date_label.pack(side=ctk.LEFT,expand=True)
         clear_bottom(bottom_frame)
+
+'''ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("green")
+test=ctk.CTk()
+test.minsize(800,500)
+testLog=Interface(test,User("bruh","man",Decimal(200.0)))
+testLog.pack()
+test.mainloop()'''

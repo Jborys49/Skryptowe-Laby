@@ -1,4 +1,5 @@
 from datetime import datetime
+import customtkinter as ctk
 import tkinter as tk
 from decimal import Decimal
 import pickle
@@ -53,18 +54,42 @@ def register_user(login:str,password:str,starting_funds:float,date:str,parent:tk
 
 
 
-class Login(tk.Frame):
+class Login(ctk.CTkFrame):
     def __init__(self,parent):
         print('Works')
         super().__init__(parent)
         self.parent=parent
 
         self.pack(side=tk.TOP,fill=tk.BOTH,expand=1)
-        LoginScreen=tk.Frame(self)
-        LoginScreen.pack(side=tk.TOP,fill=tk.BOTH,expand=1)
-        LoginScreen.configure(background="dark gray")
 
-        tk.Label(LoginScreen,text="Login").grid(row=0)
+        login_text=ctk.CTkLabel(self,text="Login",font=("Roboto",24))
+        login_text.pack(side=ctk.TOP,fill=tk.X,expand=True)
+        login_entry=ctk.CTkEntry(self,placeholder_text="Username")
+        login_entry.pack(side=ctk.TOP,expand=True)
+        password_entry=ctk.CTkEntry(self,placeholder_text="Password",show="*")
+        password_entry.pack(side=ctk.TOP,expand=True)
+        btn_login=ctk.CTkButton(self,text="Login",command=lambda:login_user(login_entry.get(),password_entry.get(),self.parent))
+        btn_login.pack(side=ctk.TOP)
+
+        register_text = ctk.CTkLabel(self, text="Register", font=("Roboto", 24))
+        register_text.pack(side=ctk.TOP,  expand=True)
+        register_login = ctk.CTkEntry(self, placeholder_text="Username")
+        register_login.pack(side=ctk.TOP,  expand=True)
+        register_password = ctk.CTkEntry(self, placeholder_text="Password", show="*")
+        register_password.pack(side=ctk.TOP, expand=True)
+        register_bud = ctk.CTkEntry(self, placeholder_text="Budget")
+        register_bud.pack(side=ctk.TOP, expand=True)
+        register_year = ctk.CTkEntry(self, placeholder_text="Year")
+        register_year.pack(side=ctk.TOP,  expand=True)
+        register_month = ctk.CTkEntry(self, placeholder_text="Month")
+        register_month.pack(side=ctk.TOP,  expand=True)
+        register_day = ctk.CTkEntry(self, placeholder_text="Day")
+        register_day.pack(side=ctk.TOP,  expand=True)
+        btn_register = ctk.CTkButton(self, text="Register",
+                                  command=lambda: register_user(register_login.get(), register_password.get(),
+                                                                register_year.get(),register_year.get()+"-"+register_month.get()+"-"+register_day.get(),self.parent))
+        btn_register.pack(side=ctk.TOP)
+        '''tk.Label(LoginScreen,text="Login").grid(row=0)
         tk.Label(LoginScreen,text="Password").grid(row=1)
         LoginVal=tk.Entry(LoginScreen)
         LoginVal.grid(row=0,column=1)
@@ -87,3 +112,9 @@ class Login(tk.Frame):
         RegisterDate.grid(row=7,column=1)
         RegisterButton=tk.Button(LoginScreen,text="Register",command=lambda:register_user(RegisterLogin.get(),RegisterPassword.get(),float(RegisterBudget.get()),RegisterDate.get(),self.parent))
         RegisterButton.grid(row=8)
+'''
+'''test=ctk.CTk()
+test.minsize(800,500)
+testLog=Login(test)
+testLog.pack()
+test.mainloop()'''

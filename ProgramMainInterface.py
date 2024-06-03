@@ -1,15 +1,17 @@
 import tkinter as tk
+import customtkinter as ctk
 from Login import Login
 import os
 
-
-class StockTradingInterface(tk.Tk):
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("green")
+class StockTradingInterface(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Stock Simulator")
         self.minsize(800, 500)
         log = Login(self)
-        log.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        log.pack(side=ctk.TOP, fill=ctk.BOTH, expand=1)
         self.protocol("WM_DELETE_WINDOW", self.quit)
         self.mainloop()
 
@@ -19,4 +21,3 @@ class StockTradingInterface(tk.Tk):
     def clean_pdf(self):
         for file in os.listdir('Stock_Graphs'):
             os.unlink(os.path.join('Stock_Graphs', file))
-pmi=StockTradingInterface()

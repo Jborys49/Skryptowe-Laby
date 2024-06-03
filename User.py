@@ -53,7 +53,8 @@ class User:
     def get_login(self):
         return self.login
     def get_profit_percent(self)->float:
-        return (float(self.currentfunds-self.starting_funds) / float(self.starting_funds))*100.0
+        '''this function is overly complicated'''
+        return float((((self.currentfunds-self.starting_funds) / (self.starting_funds))*Decimal(100.0)).quantize(Decimal('1.00')))
     def get_password(self):
         return self.password
     def set_password(self,new_password):

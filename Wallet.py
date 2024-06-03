@@ -1,4 +1,5 @@
 import tkinter as tk
+import customtkinter as ctk
 from decimal import Decimal
 from tkinter import *
 from tkinter import ttk
@@ -8,16 +9,16 @@ import Event
 def sell_stock(frame,label,user:User,stock:str,price:Decimal):
     seller=Transaction(user,stock,price,1,frame,label)
     seller.mainloop()
-class Wallet(tk.Frame):
+class Wallet(ctk.CTkFrame):
     def __init__(self, parent,user:User):
         super().__init__(parent)
         self.user = user
         self.parent = parent
 
-        self.pack(fill=tk.BOTH, expand=1)
-        self.canvas = tk.Canvas(self)
-        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
-        self.scrollable_frame = tk.Frame(self.canvas)
+        self.pack(fill=ctk.BOTH, expand=1)
+        self.canvas = ctk.CTkCanvas(self,background="dark grey")
+        self.scrollbar = ctk.CTkScrollbar(self, command=self.canvas.yview)
+        self.scrollable_frame = ctk.CTkFrame(self.canvas)
 
         self.scrollable_frame.bind(
             "<Configure>",
@@ -27,18 +28,19 @@ class Wallet(tk.Frame):
         )
 
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.scrollable_frame.pack(fill=tk.BOTH,expand=True)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
-        self.canvas.pack(side="left", fill="both", expand=True)
-        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
+        self.scrollbar.pack(side=ctk.RIGHT, fill=ctk.Y)
 
         self.wallet=self.user.get_wallet()
         for entry in self.wallet:
-            frame = tk.Frame(self.scrollable_frame)
-            label = tk.Label(frame, text='Stock:'+entry+" with shares: "+ str(self.wallet[entry]["shares"])+
+            frame = ctk.CTkFrame(self.scrollable_frame)
+            label = ctk.CTkLabel(frame, text='Stock:'+entry+" with shares: "+ str(self.wallet[entry]["shares"])+
                              " Paid for stocks: "+ str(self.wallet[entry]["paid"]))
-            button1 = tk.Button(frame, text="View stock trend")
-            button2 = tk.Button(frame, text="Sell",command=lambda:sell_stock(frame,label,self.user,entry,
+            button1 = ctk.CTkButton(frame, text="View stock trend")
+            button2 = ctk.CTkButton(frame, text="Sell",command=lambda:sell_stock(frame,label,self.user,entry,
                                                                              Event.get_price(entry,self.user.get_date(),1)))
 
             label.pack(side="left",fill=tk.X, padx=5)
