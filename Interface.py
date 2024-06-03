@@ -11,6 +11,7 @@ import Event
 
 
 def next_day(frame: ctk.CTkFrame,user:User,label:ctk.CTkLabel):
+    '''Advance the user by a day, which will change their price'''
     for widget in frame.winfo_children():
         widget.destroy()
     for file in os.listdir('Stock_Graphs'):
@@ -20,30 +21,35 @@ def next_day(frame: ctk.CTkFrame,user:User,label:ctk.CTkLabel):
     label.configure(text='Current Date: '+user.get_date().strftime("%Y-%d-%m"))
     ctk.CTkLabel(frame, text="Click one of the buttons for functionality", font=("Arial", 32)).pack(fill=ctk.BOTH,expand=1)
 def clear_bottom(frame: ctk.CTkFrame):
+    '''Clear bottom frame for readability'''
     for widget in frame.winfo_children():
         widget.destroy()
     ctk.CTkLabel(frame, text="Click one of the buttons for functionality", font=("Arial", 32)).pack(fill=ctk.BOTH, expand=1)
 def execute_buying(frame: ctk.CTkFrame, user: User):
+    '''Invoke BuyScreen for buying stock by user'''
     for widget in frame.winfo_children():
         widget.destroy()
     BuyScreen(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH, expand=True)
 
 def execute_selling(frame: ctk.CTkFrame, user: User):
+    '''Execute selling for selling stock by user'''
     for widget in frame.winfo_children():
         widget.destroy()
     Wallet(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH,expand=True)
 def execute_profile(frame:ctk.CTkFrame, user: User):
+    '''Invoke Profile screen for stats'''
     for widget in frame.winfo_children():
         widget.destroy()
     Profile(frame,user).pack(side=ctk.TOP, fill=ctk.BOTH,expand=True)
 def logout(frame: ctk.CTkFrame,user:User):
+    '''Saves user information to file and goes back to Login'''
     from Login import Login
     for widget in frame.winfo_children():
         widget.destroy()
     Event.save_user(user)
     Login(frame)
 class Interface(ctk.CTkFrame):
-
+    '''Main class of the program, lets the user go to different functionalities of the program'''
     def __init__(self,parent,user:User):
         super().__init__(parent)
         self.user = user

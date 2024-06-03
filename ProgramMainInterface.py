@@ -6,6 +6,7 @@ import os
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
 class StockTradingInterface(ctk.CTk):
+    '''the class holding the overall gui'''
     def __init__(self):
         super().__init__()
         self.title("Stock Simulator")

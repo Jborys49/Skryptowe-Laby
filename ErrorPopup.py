@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 class ErrorPopup(ctk.CTk):
+    '''simple error popup'''
     def __init__(self,message:str):
         super().__init__()
         self.title = "Error"

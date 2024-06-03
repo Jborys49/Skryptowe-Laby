@@ -7,9 +7,11 @@ from User import User
 from Transaction import Transaction
 import Event
 def sell_stock(frame,label,user:User,stock:str,price:Decimal):
+    '''Invokes transaction to sell some amount of stock'''
     seller=Transaction(user,stock,price,1,frame,label)
     seller.mainloop()
 class Wallet(ctk.CTkFrame):
+    '''The Wallet class displays all stocks owneb by the users and allows him to sell them'''
     def __init__(self, parent,user:User):
         super().__init__(parent)
         self.user = user

@@ -10,6 +10,7 @@ import pandas as pd
 
 folder_path='Stock_Users'
 def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFrame,int]:
+    '''Method fetches data untill given date from yfinance for further use'''
     # Fetch stock data from Yahoo Finance
     stock_start=(date-datetime.timedelta(days=60))
     stock_end=(date+datetime.timedelta(days=1))
@@ -22,12 +23,14 @@ def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFra
     return stock_data,last_volume
 
 def plot_stock(symbol:str, stock_data: pd.DataFrame):
+    '''get the 3 availible stock plots provided by the program'''
     if not os.path.isfile(os.path.join('Stock_Graphs/',symbol + '2m.png')):
         get_plots('Stock_Graphs/' + symbol + '2m.png',stock_data)
         get_plots('Stock_Graphs/' + symbol + '1m.png', stock_data.tail(30))
         get_plots('Stock_Graphs/' + symbol + '1w.png', stock_data.tail(7))
 
 def get_plots(file_path:str,stock_data: pd.DataFrame):
+    '''Create a plot from given dataframe and save it to given location'''
     plt.figure(figsize=(6,4))
     plt.plot(stock_data.index, stock_data['High'], label='High Prices', color='blue')
 
@@ -58,7 +61,7 @@ def save_user(currentUser:User):
     pickle.dump(currentUser,file)
     file.close()
 def get_price(stock:str,date:datetime.date,type:int)->Decimal:
-    '''0 for buying 1 for selling'''
+    '''method gets the price of given stock,0 for buying(High) 1 for selling(Low)'''
     if type==0:
         price=yf.download(stock, start=(date-datetime.timedelta(days=7)), end=(date+datetime.timedelta(days=1)))
         price=price['High'][-1]

@@ -6,9 +6,11 @@ from User import User
 from PasswordChager import PasswordChager
 
 def change_password(user: User):
+    '''invokes PasswordChanger for user'''
     pswd = PasswordChager(user)
     pswd.mainloop()
 class Profile(ctk.CTkFrame):
+    '''Displays user stats, allows him to change his password'''
     def __init__(self,parent,user:User):
         super().__init__(parent)
         self.user=user

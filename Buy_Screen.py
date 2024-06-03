@@ -9,10 +9,12 @@ stocks="AAPL,MSFT,GOOG,AMZN,JNJ,WMT,JPM,PG,XOM,T,HD,DIS,BAC,VZ,INTC,KO,CSCO,MRK,
 stocks=stocks.split(",")
 
 def get_stock_details(frame: ctk.CTkFrame, user: User,stock:str):
+    '''Initialise the stock details for given user and stock'''
     for widget in frame.winfo_children():
         widget.destroy()
     StockDetails(frame,user,stock).pack(fill=ctk.BOTH,expand=1)
 class BuyScreen(ctk.CTkFrame):
+    '''BuyScreen class handles the list of availible stocks and evoking stock details for selected stock'''
     def __init__(self, parent,user:User):
         super().__init__(parent)
         self.user=user
@@ -45,6 +47,7 @@ class BuyScreen(ctk.CTkFrame):
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
 
+        #here we create buttons to represent availible stock
         for stock in stocks:
             button = ctk.CTkButton(scrollable_frame, text=stock,width=5,command=
             lambda stc=stock:get_stock_details(right_frame,self.user,stc))

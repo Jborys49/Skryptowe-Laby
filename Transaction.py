@@ -6,12 +6,14 @@ from User import User
 from ErrorPopup import ErrorPopup
 
 def buy(master:ctk.CTk,user:User,name:str,price:Decimal, nr_of_shares:str):
+    '''Method updates user with stocks, invokes ErrorPopup if funds insufficient'''
     nr_of_shares=int(nr_of_shares)
     if user.purchase(name,price,nr_of_shares):
         master.destroy()
     else:
         error=ErrorPopup('Not enough Funds to sell')
 def sell(master:ctk.CTk,user:User,stock:str,price:Decimal, nr_of_shares:str,sell_frame:ctk.CTkFrame,label:ctk.CTkLabel):
+    '''Method updates user with funds, invokes ErrorPopup if stock insufficient'''
     nr_of_shares=int(nr_of_shares)
     if user.sell(stock,price,nr_of_shares):
         if stock in user.get_wallet():

@@ -8,6 +8,7 @@ from decimal import Decimal
 import Event
 
 def get_name(stock:str)->str:
+    '''Some stocks do not have Long or Short names so we use the best ones availible'''
     try:
         return yf.Ticker(stock).info['longName']
     except:
@@ -16,15 +17,18 @@ def get_name(stock:str)->str:
         except:
             return stock
 def embed_graph(frame:ctk.CTkFrame,image:ImageTk.PhotoImage):
+    '''put graph in StockDetailsFrame'''
     for widget in frame.winfo_children():
         widget.destroy()
     imglbl=ctk.CTkLabel(frame,image=image)
     imglbl.image=image
     imglbl.pack()
 def buy_stock(user:User,stock:str,price:Decimal):
+    '''InvokeTransaction to buy shares of stock'''
     seller=Transaction(user,stock,price,0)
     seller.mainloop()
 class StockDetails(ctk.CTkFrame):
+    '''Class has the graphs for stock trends and the buy button'''
     def __init__(self, parent:ctk.CTkFrame,user:User,stock:str):
         super().__init__(parent)
         self.user=user

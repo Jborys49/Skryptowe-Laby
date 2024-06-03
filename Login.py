@@ -63,6 +63,7 @@ def register_user(login:str,password:str,starting_funds:str,date:str,parent:tk.T
 
 
 class Login(ctk.CTkFrame):
+    '''Class handles loging in users and registering new ones. can invoke ErrorPopups when the user tries to do illegal actions'''
     def __init__(self,parent):
         super().__init__(parent)
         self.parent=parent
