@@ -5,6 +5,12 @@ from PIL import ImageTk, Image
 from User import User
 from PasswordChager import PasswordChager
 
+def display_history_entry(entry:dict):
+    if entry['is_purchase']==True:
+        return "On "+entry['date'].strftime("%Y/%m/%d")+" purchased "+ str(entry['shares'])+" "+entry['name']+" stocks at price "+str(entry['price'])
+    else:
+        return "On " + entry['date'].strftime("%Y/%m/%d") + " sold " + str(entry['shares']) + " " + entry[
+            'name'] + " stocks at price " + str(entry['price'])
 def change_password(user: User):
     '''invokes PasswordChanger for user'''
     pswd = PasswordChager(user)
@@ -57,3 +63,30 @@ class Profile(ctk.CTkFrame):
         label_perc = ctk.CTkLabel(bottom_frame, text="Current profit percentage: "+str(self.user.get_profit_percent()))
         label_perc.configure(font=("Arial", 18))
         label_perc.pack(side=ctk.TOP, fill=ctk.X,expand=True)
+
+        canvas = ctk.CTkCanvas(bottom_frame, background="dark grey")
+        scrollbar = ctk.CTkScrollbar(bottom_frame, command=canvas.yview)
+        scrollable_frame = ctk.CTkFrame(canvas)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        scrollable_frame.pack(fill=ctk.BOTH, expand=True)
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
+        scrollbar.pack(side=ctk.RIGHT, fill=ctk.Y)
+
+        history = self.user.get_history()
+        for entry in history:
+            frame = ctk.CTkFrame(scrollable_frame)
+            label = ctk.CTkLabel(frame, text=display_history_entry(entry))
+
+            label.pack(side="left", fill=ctk.X, padx=5)
+
+            frame.pack(fill="x", pady=5)

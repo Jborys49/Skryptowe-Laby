@@ -72,3 +72,5 @@ class User:
         self.currentdate=newdate
     def print(self):
         print(self.login, self.password, self.get_current_funds())
+    def get_history(self):
+        return self.history
