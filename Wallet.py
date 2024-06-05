@@ -6,10 +6,7 @@ from PIL import ImageTk, Image
 from User import User
 from Transaction import Transaction
 import Event
-def sell_stock(frame,label,user:User,stock:str,price:Decimal):
-    '''Invokes transaction to sell some amount of stock'''
-    seller=Transaction(user,stock,price,1,frame,label)
-    seller.mainloop()
+
 class Wallet(ctk.CTkFrame):
     '''The Wallet class displays all stocks owneb by the users and allows him to sell them'''
     def __init__(self, parent,user:User):
@@ -42,7 +39,7 @@ class Wallet(ctk.CTkFrame):
             label = ctk.CTkLabel(frame, text='Stock:'+entry+" with shares: "+ str(self.wallet[entry]["shares"])+
                              " Paid for stocks: "+ str(self.wallet[entry]["paid"]))
             #button1 = ctk.CTkButton(frame, text="View stock trend",command=lambda:stock_trend(entry,self.user.get_date()) )
-            button2 = ctk.CTkButton(frame, text="Sell",command=lambda:sell_stock(frame,label,self.user,entry,
+            button2 = ctk.CTkButton(frame, text="Sell",command=lambda:self.sell_stock(frame,label,self.user,entry,
                                                                              Event.get_price(entry,self.user.get_date(),1)))
 
             label.pack(side="left",fill=ctk.X, padx=5)
@@ -51,3 +48,7 @@ class Wallet(ctk.CTkFrame):
 
             frame.pack(fill="x", pady=5)
 
+    def sell_stock(sefl,frame, label, user: User, stock: str, price: Decimal):
+        '''Invokes transaction to sell some amount of stock'''
+        seller = Transaction(user, stock, price, 1, frame, label)
+        seller.mainloop()

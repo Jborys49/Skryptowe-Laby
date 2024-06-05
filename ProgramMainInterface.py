@@ -1,6 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
 from Login import Login
+import Event
 import os
 
 ctk.set_appearance_mode("dark")
@@ -17,8 +18,5 @@ class StockTradingInterface(ctk.CTk):
         self.mainloop()
 
     def quit(self):
-        self.clean_pdf()
+        Event.clean_pdf()
         self.destroy()
-    def clean_pdf(self):
-        for file in os.listdir('Stock_Graphs'):
-            os.unlink(os.path.join('Stock_Graphs', file))

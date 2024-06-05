@@ -5,16 +5,7 @@ from PIL import ImageTk, Image
 from User import User
 from PasswordChager import PasswordChager
 
-def display_history_entry(entry:dict):
-    if entry['is_purchase']==True:
-        return "On "+entry['date'].strftime("%Y/%m/%d")+" purchased "+ str(entry['shares'])+" "+entry['name']+" stocks at price "+str(entry['price'])
-    else:
-        return "On " + entry['date'].strftime("%Y/%m/%d") + " sold " + str(entry['shares']) + " " + entry[
-            'name'] + " stocks at price " + str(entry['price'])
-def change_password(user: User):
-    '''invokes PasswordChanger for user'''
-    pswd = PasswordChager(user)
-    pswd.mainloop()
+
 class Profile(ctk.CTkFrame):
     '''Displays user stats, allows him to change his password'''
     def __init__(self,parent,user:User):
@@ -41,7 +32,7 @@ class Profile(ctk.CTkFrame):
         image=ctk.CTkLabel(icon_frame, image=self.icon,text="")
         image.pack(side=ctk.TOP, fill=ctk.BOTH)
 
-        button_top = ctk.CTkButton(top_frame, text="Change Password",command=lambda:change_password(self.user))
+        button_top = ctk.CTkButton(top_frame, text="Change Password",command=lambda:self.change_password(self.user))
         button_top.pack(side=ctk.RIGHT)
 
         # Bottom frame (80% of the space)
@@ -85,8 +76,21 @@ class Profile(ctk.CTkFrame):
         history = self.user.get_history()
         for entry in history:
             frame = ctk.CTkFrame(scrollable_frame)
-            label = ctk.CTkLabel(frame, text=display_history_entry(entry))
+            label = ctk.CTkLabel(frame, text=self.display_history_entry(entry))
 
             label.pack(side="left", fill=ctk.X, padx=5)
 
             frame.pack(fill="x", pady=5)
+
+    def display_history_entry(self,entry: dict):
+        if entry['is_purchase'] == True:
+            return "On " + entry['date'].strftime("%Y/%m/%d") + " purchased " + str(entry['shares']) + " " + entry[
+                'name'] + " stocks at price " + str(entry['price'])
+        else:
+            return "On " + entry['date'].strftime("%Y/%m/%d") + " sold " + str(entry['shares']) + " " + entry[
+                'name'] + " stocks at price " + str(entry['price'])
+
+    def change_password(self,user: User):
+        '''invokes PasswordChanger for user'''
+        pswd = PasswordChager(user)
+        pswd.mainloop()

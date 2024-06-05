@@ -4,9 +4,10 @@ import yfinance as yf
 from decimal import Decimal
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from User import User
 import pickle
 import pandas as pd
+
+from User import User
 
 folder_path='Stock_Users'
 def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFrame,int]:
@@ -36,7 +37,6 @@ def get_plots(file_path:str,stock_data: pd.DataFrame):
 
     # Plot low prices
     plt.plot(stock_data.index, stock_data['Low'], label='Low Prices', color='red')
-
     # Set title and labels
     plt.xlabel('Date')
     plt.ylabel('Price')
@@ -70,3 +70,6 @@ def get_price(stock:str,date:datetime.date,type:int)->Decimal:
         price=price['Low'][-1]
     return Decimal(price).quantize(Decimal('1.00'))
 
+def clean_pdf():
+    for file in os.listdir('Stock_Graphs'):
+        os.unlink(os.path.join('Stock_Graphs', file))

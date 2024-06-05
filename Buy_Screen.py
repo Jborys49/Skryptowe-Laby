@@ -8,11 +8,7 @@ from StockDetails import StockDetails
 stocks="AAPL,MSFT,GOOG,AMZN,JNJ,WMT,JPM,PG,XOM,T,HD,DIS,BAC,VZ,INTC,KO,CSCO,MRK,CVX,ORCL,ABT,NKE,MCD,IBM,MMM,CAT,UNH,HON,C,GE,DE,CL,MO,AXP,USB,GS,PFE,WFC,BMY,SBUX,TXN,SYY,MDT,QCOM,LLY,UPS,MS,DHR,TGT,COST,CVS,LMT,ADP,ISRG,SCHW,SPGI,ITW,RTN,NSC,AMGN,GILD,JCI,GPC,AFL,BDX,CSX,EMR,BEN,TROW,COF,FIS,AON,KMB,ADM,AMT,BK,FDX,EMN"
 stocks=stocks.split(",")
 
-def get_stock_details(frame: ctk.CTkFrame, user: User,stock:str):
-    '''Initialise the stock details for given user and stock'''
-    for widget in frame.winfo_children():
-        widget.destroy()
-    StockDetails(frame,user,stock).pack(fill=ctk.BOTH,expand=1)
+
 class BuyScreen(ctk.CTkFrame):
     '''BuyScreen class handles the list of availible stocks and evoking stock details for selected stock'''
     def __init__(self, parent,user:User):
@@ -50,9 +46,15 @@ class BuyScreen(ctk.CTkFrame):
         #here we create buttons to represent availible stock
         for stock in stocks:
             button = ctk.CTkButton(scrollable_frame, text=stock,width=5,command=
-            lambda stc=stock:get_stock_details(right_frame,self.user,stc))
+            lambda stc=stock:self.get_stock_details(right_frame,self.user,stc))
             button.pack(fill=ctk.X, padx=5, pady=2)
 
         scrollbar.pack(side=ctk.RIGHT, fill=ctk.Y)
         canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
 
+    def get_stock_details(self,frame: ctk.CTkFrame, user: User, stock: str):
+        '''Initialise the stock details for given user and stock'''
+        for widget in frame.winfo_children():
+            widget.destroy()
+        stcdet=StockDetails(frame, user, stock)
+        stcdet.pack(fill=ctk.BOTH, expand=1)
