@@ -15,7 +15,10 @@ def fetch_and_save_stock_data(symbol:str, date: datetime.date)->tuple[pd.DataFra
     # Fetch stock data from Yahoo Finance
     stock_start=(date-datetime.timedelta(days=60))
     stock_end=(date+datetime.timedelta(days=1))
-    stock_data = yf.download(symbol, start=stock_start, end=stock_end)
+    try:
+        stock_data = yf.download(symbol, start=stock_start, end=stock_end)
+    except Exception as e:
+        print(e)
     del stock_data['Adj Close']
     del stock_data['Open']
     del stock_data['Close']

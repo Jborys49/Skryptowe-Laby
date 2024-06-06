@@ -55,9 +55,14 @@ class Profile(ctk.CTkFrame):
         label_perc.configure(font=("Arial", 18))
         label_perc.pack(side=ctk.TOP, fill=ctk.X,expand=True)
 
-        canvas = ctk.CTkCanvas(bottom_frame, background="dark grey")
+        label_explain=ctk.CTkLabel(bottom_frame,text="User history")
+        label_explain.configure(font=("Arial", 18))
+        label_explain.pack(side=ctk.TOP, fill=ctk.X, expand=True)
+
+        canvas = ctk.CTkCanvas(bottom_frame, background="#2b2b2b",highlightthickness=0)
         scrollbar = ctk.CTkScrollbar(bottom_frame, command=canvas.yview)
         scrollable_frame = ctk.CTkFrame(canvas)
+        scrollable_frame.pack(side=ctk.TOP, fill=ctk.BOTH, expand=True)
 
         scrollable_frame.bind(
             "<Configure>",
@@ -67,7 +72,7 @@ class Profile(ctk.CTkFrame):
         )
 
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        scrollable_frame.pack(fill=ctk.BOTH, expand=True)
+        #scrollable_frame.pack(fill=ctk.BOTH, expand=True)
         canvas.configure(yscrollcommand=scrollbar.set)
 
         canvas.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True)
@@ -75,12 +80,11 @@ class Profile(ctk.CTkFrame):
 
         history = self.user.get_history()
         for entry in history:
-            frame = ctk.CTkFrame(scrollable_frame)
-            label = ctk.CTkLabel(frame, text=self.display_history_entry(entry))
+            #frame = ctk.CTkFrame(scrollable_frame)
+            label = ctk.CTkLabel(scrollable_frame, text=self.display_history_entry(entry),font=("Arial",18))
+            label.pack(side="top", fill=ctk.X, padx=5,expand=True)
 
-            label.pack(side="left", fill=ctk.X, padx=5)
-
-            frame.pack(fill="x", pady=5)
+            #frame.pack(fill="x", pady=5)
 
     def display_history_entry(self,entry: dict):
         if entry['is_purchase'] == True:

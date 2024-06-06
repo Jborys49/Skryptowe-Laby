@@ -56,5 +56,5 @@ class BuyScreen(ctk.CTkFrame):
         '''Initialise the stock details for given user and stock'''
         for widget in frame.winfo_children():
             widget.destroy()
-        stcdet=StockDetails(frame, user, stock)
-        stcdet.pack(fill=ctk.BOTH, expand=1)
+        self.stcdet=StockDetails(frame, user, stock)
+        self.stcdet.pack(fill=ctk.BOTH, expand=1)
